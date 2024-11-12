@@ -1,7 +1,0 @@
-#Ignore all files
-*
-#Unignore gitignore itself
-!.gitignore
-
-#Unignore .v files
-!**/*.v
