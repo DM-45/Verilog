@@ -21,30 +21,45 @@
 
 
 module butterfly(
-    input wire signed [15:0] a, b, w,
-    output reg signed [15:0] y0, y1
+    input [15:0] a, b, w, q,
+    output [15:0] y0, y1
+);
+	wire [15:0] temp;
+
+modmul mm(.a(b), .b(w), .q(q), .y(temp) );
+modadd ma(.a(a), .b(temp), .y(y0), .q(q) );
+modsub ms(.a(a), .b(temp), .y(y1), .q(q) );
+
+endmodule
+
+module modadd(
+input [15:0] a, b, q,
+output [15:0] y
 );
 
-    // Internal signals
-    wire signed [31:0] w_b;
+wire[16:0] sum;
+assign sum = a+b;
+assign y = (sum >= q) ? sum - q : sum;
 
-    // Multiply twiddle factor with b
-    assign w_b = w * b;
+endmodule
 
-    // Butterfly operation
-//    assign y0 = (a + w_b)%7681;
-//    assign y1 = (a - w_b)%7681;
-    
-    always @(*) begin
-    	y0 = (a + w_b) % 7681;
-    	if(y0 < 0) y0 <= y0 + 7681;
-    	else y0 <= y0;
-    end
-    
-    always @(*) begin
-    	y1 = (a - w_b) % 7681;
-    	if(y1 < 0) y1 <= y1 + 7681;
-    	else y1 <= y1;
-    end
+module modsub(
+input [15:0] a, b, q,
+output [15:0] y
+);
 
+wire[15:0] sub;
+assign sub = a - b;
+assign y = (a >= b) ? sub : sub + q;
+
+endmodule
+
+module modmul(
+	input [15:0] a, b, q,
+	output [15:0] y
+);
+	wire [31:0] result;
+	assign result = a*b;
+	assign y = result % q;
+	
 endmodule

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 11/19/2024 02:49:16 PM
+// Create Date: 11/27/2024 12:02:19 PM
 // Design Name: 
-// Module Name: radix2_4point_tb
+// Module Name: tb_radix2_4pt
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -22,21 +22,21 @@
 
 `timescale 1ns / 1ps
 
-module tb_radix2_4point();
+module tb_radi2_4pt;
 
 reg clk;
 reg rst;
-reg [15:0] x0, x1, x2, x3;
+reg [15:0] in0, in1, in2, in3;
 wire [15:0] out0, out1, out2, out3;
 
-// Instantiate the radix2_4point module
-radix2_4point uut (
+// Instantiate the ntt4point module
+ntt4point uut (
     .clk(clk),
     .rst(rst),
-    .x0(x0),
-    .x1(x1),
-    .x2(x2),
-    .x3(x3),
+    .in0(in0),
+    .in1(in1),
+    .in2(in2),
+    .in3(in3),
     .out0(out0),
     .out1(out1),
     .out2(out2),
@@ -50,10 +50,10 @@ initial begin
     // Initialize signals
     clk = 0;
     rst = 1;
-    x0 = 16'd0;
-    x1 = 16'd0;
-    x2 = 16'd0;
-    x3 = 16'd0;
+    in0 = 16'd0;
+    in1 = 16'd0;
+    in2 = 16'd0;
+    in3 = 16'd0;
 
     // Apply reset
     #10;
@@ -61,11 +61,11 @@ initial begin
 
     // Apply test vectors
     #10;
-    x0 = 16'd1;
-    x1 = 16'd2;
-    x2 = 16'd3;
-    x3 = 16'd4;
-    
+    in0 = 16'd1;
+    in1 = 16'd2;
+    in2 = 16'd3;
+    in3 = 16'd4;
+
     // End of simulation
     #100;
     $finish;
